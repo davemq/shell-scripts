@@ -8,6 +8,7 @@ do
     case $opt in
         "m")
             suffix="m"
+            shift
             ;;
     esac
 done
