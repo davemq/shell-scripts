@@ -1,0 +1,22 @@
+#!/bin/ksh
+
+suffix="s"
+
+# parse options
+while getopts "m" opt
+do
+    case $opt in
+        "m")
+            suffix="m"
+            shift
+            ;;
+    esac
+done
+
+if [ "$suffix" = "m" ]
+then
+    exec fibx -m "! $*"
+else
+    exec fibx "! $*"
+fi
+

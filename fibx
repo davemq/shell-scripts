@@ -1,0 +1,32 @@
+#!/bin/ksh
+
+suffix="s"
+
+# parse options
+while getopts "m" opt
+do
+    case $opt in
+        "m")
+            suffix="m"
+            shift
+            ;;
+    esac
+done
+
+(( last=0 ))
+(( cur=1 ))
+
+while :
+do
+    eval $*
+    status=$?
+    if [ $status -ne 0 ]
+    then
+	exit $status
+    fi
+    sleep ${cur}${suffix}
+    (( oldlast = last ))
+    (( oldcur = cur ))
+    (( cur = cur + last ))
+    (( last = oldcur ))
+done
