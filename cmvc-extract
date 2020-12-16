@@ -1,0 +1,33 @@
+#!/usr/bin/ksh93
+
+# Usage: cmvc-extract defect [ defect ... ]
+
+if [[ -z "$CMVC_TOP" ]]
+then
+    print Set CMVC_TOP
+    exit 1
+fi
+
+needscomma=0
+defects='('
+for defect in $*
+do
+    if [[ $needscomma -eq 1 ]]
+    then
+        defects="${defects},"
+    fi
+
+    defects="${defects}'$defect'"
+    needscomma=1
+done
+defects="${defects})"
+
+query="defectName in $defects"
+if [ -n ${CMVC_RELEASE} ]
+then
+    query="${query} and releaseName = '${CMVC_RELEASE}'"
+fi
+    
+Report -view changeview -where "${query}" -raw | \
+    awk -F'|' '{ printf "File -extract %s -version %s -release %s\n", $5, $4, $1; }' | \
+    /opt/freeware/bin/sort -V | sh -x
