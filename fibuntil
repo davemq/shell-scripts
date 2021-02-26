@@ -6,15 +6,12 @@ flags=""
 while getopts "m" opt
 do
     case $opt in
-        "m")
-            if [[ -n "$flags" ]]
-            then
-                flags="$flags "
-            fi
-            flags="${flags}-m "
+        "d"|"h"|"m"|"s")
+            flags="-"$opt
             shift
+            break
             ;;
     esac
 done
 
-fibx "${flags}! $*"
+fibx "${flags} ! $*"

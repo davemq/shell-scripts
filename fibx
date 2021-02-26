@@ -6,9 +6,10 @@ suffix="s"
 while getopts "m" opt
 do
     case $opt in
-        "m")
-            suffix="m"
+        "d"|"h"|"m"|"s")
+            suffix=$opt
             shift
+            break
             ;;
     esac
 done
