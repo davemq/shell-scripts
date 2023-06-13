@@ -8,9 +8,9 @@ import random
 # constants
 DIRS      = [environ['HOME'], '/usr']
 NFILES    = 1
+PATTERNS  = ['*.gif', '*.jpg', '*.png']
 
 files     = []
-patterns  = ['*.gif', '*.jpg', '*.png']
 
 parser = argparse.ArgumentParser(prog='random_pic')
 parser.add_argument('nfiles', type=int, default=NFILES, help='Number of files to print', nargs='?')
@@ -23,7 +23,7 @@ if args.dir is None:
 
 for d in args.dir:
     p = Path(d)
-    for pat in patterns:
+    for pat in PATTERNS:
         files += [f for f in p.rglob(pat)]
 
 for i in range(args.nfiles):
