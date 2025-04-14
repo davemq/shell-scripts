@@ -13,7 +13,7 @@ import random
 # constants
 DIRS = [environ["HOME"], "/usr"]
 NFILES = 1
-PATTERNS = ["*.gif", "*.jpg", "*.png"]
+PATTERNS = ["*.gif", "*.jpg", "*.pbm", "*.png", "*.svg", "*.xpm"]
 
 files = set()
 
@@ -47,6 +47,6 @@ for d in args.dir:
             files |= {root / f for f in fs if fnmatch.fnmatch(f, pat)}
 
 if len(files) >= args.nfiles:
-    l = list(files)
+    filelist = list(files)
     for i in range(args.nfiles):
-        print(str(random.choice(l)))
+        print(str(random.choice(filelist)))
