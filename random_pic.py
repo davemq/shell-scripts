@@ -13,7 +13,7 @@ import random
 # constants
 DIRS = [environ["HOME"], "/usr"]
 NFILES = 1
-PATTERNS = ["*.gif", "*.jpg", "*.pbm", "*.png", "*.svg", "*.xpm"]
+PATTERNS = ["*.gif", "*.jpg", "*.jxl", "*.pbm", "*.png", "*.svg", "*.xpm"]
 
 files = set()
 
