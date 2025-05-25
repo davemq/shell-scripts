@@ -86,7 +86,7 @@ do
 done
 
 set -- $REPLY
-output=""
+output='\<'
 (( unders=0 ))
 while [ $# -gt 0 ]
 do
@@ -141,6 +141,7 @@ elif (( unders == 1 ))
 then
     output="${output}[${outchars}]"
 fi
+output="${output}\\>"
 
 echo $output
 
