@@ -33,6 +33,8 @@
 #   agreement here, so it would be useful to make this tunable through
 #   command line options. Also useful when generating hangman phrases
 #   in the "reverse" mode (see above).
+#
+# - take phrase as a command line argument rather than standard input
 
 chars="abcdefghijklmnopqrstuvwxyz"
 allchars=$chars
