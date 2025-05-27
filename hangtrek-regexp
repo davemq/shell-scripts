@@ -46,6 +46,8 @@ set -o noglob			# don't expand filename patterns
 # -x  Remove character from chars. It only looks at the first character
 #     of the option string, but you can use multiple -x options to 
 #     remove multiple characters
+#
+# *   phrase. Assume a single option here, and break out
 
 while [ $# -gt 0 ]
 do
@@ -57,21 +59,29 @@ do
 	    chars=${chars/$c/}	# remove
 	    outchars=$chars
 	    shift
+	    ;;
 
+	*)
+	    phrase=$1
+	    break
 	    ;;
     esac
     shift
 done
 
-# Read the whole phrase from standard input into REPLY
-read
+if [ -n "$phrase" ]
+then
+    REPLY="$phrase"
+else
+    # Read the whole phrase from standard input into REPLY
+    read
+fi
 
 # Change word separators to XXX
 REPLY=${REPLY//   / XXX }
 
 # put into positional parameters
 set -- $REPLY
-
 
 # Scan for alphabetical characters and remove them from "chars"
 while [ $# -gt 0 ]
