@@ -129,7 +129,7 @@ do
 		 output="${output}[${outchars}]"
 	    fi
 	    (( unders = 0 ))
-	    output="${output} "
+	    output="${output}  *"
 	    ;;
 	*)
 	    if (( unders > 1 ))
@@ -155,7 +155,7 @@ then
 fi
 output="${output}\\>"
 
-echo $output
+echo "$output"
 
 # Apply updated "chars" in generating the regular expression
 
