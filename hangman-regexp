@@ -84,7 +84,7 @@ else
 fi
 
 # Change word separators to XXX
-REPLY=${REPLY//   / XXX }
+REPLY=${REPLY// [ \/] / XXX }
 
 # put into positional parameters
 set -- $REPLY
