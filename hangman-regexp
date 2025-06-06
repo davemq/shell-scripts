@@ -39,6 +39,7 @@
 chars="abcdefghijklmnopqrstuvwxyz"
 allchars=$chars
 outchars='[:alpha:]'
+singlechars='aei'
 
 set -o noglob			# don't expand filename patterns
 
@@ -58,6 +59,11 @@ do
 	    c=${2,[A-Z]}	# convert to lower case
 	    chars=${chars/$c/}	# remove
 	    outchars=$chars
+	    singlechars=${singlechars/$c/} # remove
+	    if [ -z "${singlechars}" ]
+	    then
+		singlechars=${outchars}
+	    fi
 	    shift
 	    ;;
 
@@ -91,6 +97,11 @@ do
 	    c=${1,[A-Z]}	# lower case it
 	    chars=${chars/$c/}	# remove it
 	    outchars=$chars
+	    singlechars=${singlechars/$c/} # remove
+	    if [ -z "${singlechars}" ]
+	    then
+		singlechars=${outchars}
+	    fi
 	    ;;
 
     esac
@@ -126,7 +137,7 @@ do
 		output="${output}[${outchars}]\{${unders}\}"
 	    elif (( unders == 1 ))
 	    then
-		 output="${output}[${outchars}]"
+		 output="${output}[${singlechars}]"
 	    fi
 	    (( unders = 0 ))
 	    output="${output}  *"
