@@ -37,7 +37,6 @@
 # - take phrase as a command line argument rather than standard input
 
 chars="abcdefghijklmnopqrstuvwxyz"
-allchars=$chars
 outchars='[:alpha:]'
 singlechars='aei'
 
@@ -111,6 +110,7 @@ done
 set -- $REPLY
 output='\<'
 (( unders=0 ))
+(( wordchars= 0 ))
 while [ $# -gt 0 ]
 do
     case "$1" in 
@@ -124,11 +124,13 @@ do
 		 output="${output}[${outchars}]"
 	    fi
 	    (( unders = 0 ))
+	    (( wordchars++ ))
 	    output="${output}${c}"
 	    ;;
 
 	_)
 	    (( unders++ ))
+	    (( wordchars++ ))
 	    ;;
 
 	XXX)
@@ -137,9 +139,15 @@ do
 		output="${output}[${outchars}]\{${unders}\}"
 	    elif (( unders == 1 ))
 	    then
-		 output="${output}[${singlechars}]"
+		if (( wordchars == 1 ))
+		then
+		    output="${output}[${singlechars}]"
+		else
+		    output="${output}[${outchars}]"
+		fi
 	    fi
 	    (( unders = 0 ))
+	    (( wordchars = 0 ))
 	    output="${output}  *"
 	    ;;
 	*)
@@ -151,6 +159,7 @@ do
 		 output="${output}[${outchars}]"
 	    fi
 	    (( unders = 0 ))
+	    (( wordchars = 0 ))
 	    output="${output}$1"
 	    ;;
 	    
