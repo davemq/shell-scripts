@@ -3,10 +3,9 @@
 import argparse
 import string
 
-global chars, outchars
+global chars
 
 chars = string.ascii_lowercase
-outchars = r"[" + chars + r"]"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -29,7 +28,6 @@ if __name__ == "__main__":
     for ch in c.remove:
         remove.append(ch.lower())
         chars = chars.replace(ch.lower(), "")
-        outchars = outchars.replace(ch.lower(), "")
 
     c.phrase = c.phrase.lower()
 
@@ -44,7 +42,6 @@ if __name__ == "__main__":
         for ch in wordchars:
             if ch in chars:
                 chars = chars.replace(ch, "")
-                outchars = outchars.replace(ch, "")
 
     # Write regexp
     regex = "\\" + "<"
@@ -54,7 +51,7 @@ if __name__ == "__main__":
         for ch in wordchars:
             if ch in string.ascii_lowercase:
                 if unders > 0:
-                    regex += outchars
+                    regex += f'[{chars}]'
                 if unders > 1:
                     regex += f"\\{{{unders}\\}}"
                 unders = 0
@@ -62,7 +59,7 @@ if __name__ == "__main__":
             elif ch == "_":
                 unders += 1
         if unders > 0:
-            regex += outchars
+            regex += f'[{chars}]'
         if unders > 1:
             regex += f"\\{{{unders}\\}}"
         regex += "  *"
