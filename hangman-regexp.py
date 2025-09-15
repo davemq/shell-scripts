@@ -49,14 +49,14 @@ if __name__ == "__main__":
         wordchars = w.split(" ")
         unders = 0
         for ch in wordchars:
-            if ch in string.ascii_lowercase:
+            if ch != '_':
                 if unders > 0:
                     regex += f'[{chars}]'
                 if unders > 1:
                     regex += f"\\{{{unders}\\}}"
                 unders = 0
                 regex += ch
-            elif ch == "_":
+            else:
                 unders += 1
         if unders > 0:
             regex += f'[{chars}]'
