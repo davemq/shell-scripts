@@ -45,11 +45,9 @@ if __name__ == "__main__":
 
     # Write regexp
     regex = ""
-    first = True
+    separator = ""
     for w in words:
-        if not first:
-            regex += "[[:space:]]\\+"
-        regex += "\\<"
+        regex += separator + "\\<"
         wordchars = w.split(" ")
         unders = 0
         for ch in wordchars:
@@ -67,6 +65,6 @@ if __name__ == "__main__":
         if unders > 1:
             regex += f"\\{{{unders}\\}}"
         regex += "\\>"
-        first = False
+        separator = "[[:space:]]\\+"
 
     print(regex)
