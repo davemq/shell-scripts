@@ -22,19 +22,15 @@ if __name__ == "__main__":
     parser.add_argument("phrase", help="hangman phrase")
 
     c = parser.parse_args()
-    if not c.remove:
-        c.remove = []
-
-    remove = []
-    for ch in c.remove:
-        remove.append(ch.lower())
-        chars = chars.replace(ch.lower(), "")
+    if c.remove:
+        for ch in c.remove:
+            chars = chars.replace(ch.lower(), "")
 
     c.phrase = c.phrase.lower()
 
     # Replace 2 or more spaces or / surrounded by 0 or more spaces with " XXX "
-    c.phrase = re.sub(r' */ *', ' XXX ', c.phrase)
-    c.phrase = re.sub(r' {2,}', ' XXX ', c.phrase)
+    c.phrase = re.sub(r" */ *", " XXX ", c.phrase)
+    c.phrase = re.sub(r" {2,}", " XXX ", c.phrase)
 
     # Remove phrase alphabetical characters from chars and outchars
     words = c.phrase.split(" XXX ")
@@ -52,9 +48,9 @@ if __name__ == "__main__":
         wordchars = w.split(" ")
         unders = 0
         for ch in wordchars:
-            if ch != '_':
+            if ch != "_":
                 if unders > 0:
-                    regex += f'[{chars}]'
+                    regex += f"[{chars}]"
                 if unders > 1:
                     regex += f"\\{{{unders}\\}}"
                 unders = 0
@@ -62,7 +58,7 @@ if __name__ == "__main__":
             else:
                 unders += 1
         if unders > 0:
-            regex += f'[{chars}]'
+            regex += f"[{chars}]"
         if unders > 1:
             regex += f"\\{{{unders}\\}}"
         regex += "\\>"
