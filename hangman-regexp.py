@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import re
 import string
 
 global chars
@@ -31,9 +32,9 @@ if __name__ == "__main__":
 
     c.phrase = c.phrase.lower()
 
-    # Replace "   " or " / " with "XXX"
-    c.phrase = c.phrase.replace("   ", " XXX ")
-    c.phrase = c.phrase.replace(" / ", " XXX ")
+    # Replace 2 or more spaces or / surrounded by 0 or more spaces with " XXX "
+    c.phrase = re.sub(r' */ *', ' XXX ', c.phrase)
+    c.phrase = re.sub(r' {2,}', ' XXX ', c.phrase)
 
     # Remove phrase alphabetical characters from chars and outchars
     words = c.phrase.split(" XXX ")
