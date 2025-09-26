@@ -16,8 +16,10 @@ if __name__ == "__main__":
     if not c.guess:
         c.guess = []
     guesses = []
+    occur = dict()
     for ch in c.guess:
         guesses.append(ch.lower())
+        occur[ch.lower()] = 0
 
     c.phrase = c.phrase.lower()
 
@@ -32,6 +34,7 @@ if __name__ == "__main__":
         for ch in w:
             if ch in guesses:
                 phrase += ch.upper() + " "
+                occur[ch.lower()] += 1
             elif ch in alphas:
                 phrase += "_ "
             else:
@@ -40,6 +43,8 @@ if __name__ == "__main__":
     phrase = phrase.removesuffix(" / ")
 
     print(f"{phrase=}")
+
+    print(f"{occur=}")
 
     # write wrong guesses
     wrong = ""
