@@ -42,13 +42,13 @@ if __name__ == "__main__":
         phrase += "/ "
     phrase = phrase.removesuffix(" / ")
 
-    print(f"{phrase=}")
+    print(f"Phrase:\t\t{phrase}")
 
-    print(f"{occur=}")
+    print(f"Occurrences:\t{occur}")
 
     # write wrong guesses
     wrong = ""
     for g in guesses:
         if g.upper() not in phrase:
             wrong += g.upper()
-    print(f"{wrong=}")
+    print(f"Wrong guesses:\t{wrong}")
