@@ -44,11 +44,17 @@ if __name__ == "__main__":
 
     print(f"Phrase:\t\t{phrase}")
 
-    print(f"Occurrences:\t{occur}")
+    if len(occur) == 0:
+        print("Occurrences:\tNone")
+    else:
+        print(f"Occurrences:\t{occur}")
 
     # write wrong guesses
     wrong = ""
     for g in guesses:
         if g.upper() not in phrase:
             wrong += g.upper()
-    print(f"Wrong guesses:\t{wrong}")
+    if len(wrong) == 0:
+        print("Wrong guess:\tNone")
+    else:
+        print(f"Wrong guesses:\t{wrong}")
