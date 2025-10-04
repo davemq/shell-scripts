@@ -1,20 +1,73 @@
+#!/usr/bin/env python
+
+from collections import defaultdict
 import csv
 import random
+import sys
 
 days = ('Starting City', 'Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday')
-towns = dict()
-for day in days:
-    towns[day] = []
+starts = []
+ends = []
+adjacencies = defaultdict(list)
 
-with open('/home/davemarq/Downloads/ragbrai-by-year.csv', newline='') as csvfile:
-    reader= csv.DictReader(csvfile, delimiter=',')
-    for row in reader:
-        for day in days:
-            towns[day].append(row[day])
+def parse():
+    global adjacencies, ends, starts
+    
+    with open('/home/davemarq/Downloads/ragbrai-by-year.csv', newline='') as csvfile:
+        reader= csv.DictReader(csvfile, delimiter=',')
+        for row in reader:
+            starts.append(row['Starting City'])
+            if row['Saturday'] != 'N/A':
+                ends.append(row['Saturday'])
+            else:
+                ends.append(row['Friday'])
 
-print(towns)
-print(total)
-print('Random choice: ')
-for day in days:
-    print(random.choice(towns[day]))
+    with open('/home/davemarq/Downloads/ragbrai-by-year.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=',')
+        header = False
+        for row in reader:
+            prev = None
+            for d in reversed(days):
+                if prev is None:
+                    prev = d
+                elif row[prev] != 'N/A':
+                    adjacencies[row[prev]].append(row[d])
+                prev = d
+    
+
+def makeroute():
+    global adjacencies, ends, starts
+
+    route = []
+    cur = random.choice(ends)
+    route.append(cur)
+    for i in range(7):
+        try:
+            next = random.choice(adjacencies[cur])
+        except IndexError:
+            return None
+        route.append(next)
+        cur = next
+    if cur not in starts:
+        return None
+
+    return reversed(route)
+
+
+parse()
+
+routes = defaultdict(int)
+
+for i in range(1000000):
+    r = None
+    while r is None:
+        r = makeroute()
+    routes[tuple(r)] += 1
+print(f"Created {len(routes)} unique routes")
+
+sorted = dict(sorted(routes.items(), key=lambda item: item[1], reverse=True))
+for r in sorted:
+    if sorted[r] < 2:
+        break
+    print(r, sorted[r])
 
