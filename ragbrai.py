@@ -13,7 +13,7 @@ adjacencies = defaultdict(list)
 def parse():
     global adjacencies, ends, starts
     
-    with open('/home/davemarq/Downloads/ragbrai-by-year.csv', newline='') as csvfile:
+    with open('/home/davemarq/shell-scripts/ragbrai-by-year.csv', newline='') as csvfile:
         reader= csv.DictReader(csvfile, delimiter=',')
         for row in reader:
             starts.append(row['Starting City'])
@@ -22,7 +22,7 @@ def parse():
             else:
                 ends.append(row['Friday'])
 
-    with open('/home/davemarq/Downloads/ragbrai-by-year.csv', newline='') as csvfile:
+    with open('/home/davemarq/shell-scripts/ragbrai-by-year.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',')
         header = False
         for row in reader:
@@ -55,6 +55,9 @@ def makeroute():
 
 
 parse()
+# print(f"{len(set(starts))=}")
+# print(f"{len(set(ends))=}")
+# print(f"{ends=}")
 
 routes = defaultdict(int)
 
@@ -65,9 +68,31 @@ for i in range(1000000):
     routes[tuple(r)] += 1
 print(f"Created {len(routes)} unique routes")
 
-sorted = dict(sorted(routes.items(), key=lambda item: item[1], reverse=True))
-for r in sorted:
-    if sorted[r] < 2:
-        break
-    print(r, sorted[r])
+sortedroutes = dict(sorted(routes.items(), key=lambda item: item[1], reverse=True))
+for r in sortedroutes:
+#    if sorted[r] < 2:
+#        break
+    print(r, sortedroutes[r])
 
+# analyze distribution
+# firsts = defaultdict(int)
+# lasts = defaultdict(int)
+# for r in sortedroutes:
+#     firsts[list(r)[0]] += sortedroutes[r]
+#     lasts[list(r)[7]] += sortedroutes[r]
+
+# print(f"{len(firsts)=}")
+# print(f"{len(lasts)=}")
+
+# print(f"{firsts=}")
+# print(f"{lasts=}")
+
+# sortedfirsts = dict(sorted(firsts.items(), key=lambda item: item[1], reverse=True))
+# print("sorted firsts:")
+# for f in sortedfirsts:
+#     print(f, sortedfirsts[f])
+
+# sortedlasts = dict(sorted(lasts.items(), key=lambda item: item[1], reverse=True))
+# print("sorted lasts:")
+# for l in sortedlasts:
+#     print(l, sortedlasts[l])
