@@ -73,7 +73,7 @@ def makeroute():
         except IndexError:
             return None
         route.append(nexttown)
-        cur = next
+        cur = nexttown
     if cur not in starts:
         return None
 
@@ -83,6 +83,13 @@ def makeroute():
 def make_graph():
     """Make DOT graph fro adjacencies lists."""
     dot = graphviz.Digraph(name="ragbrai", format="png", engine="dot")
+
+    for s in starts:
+        dot.node(s, color='green', shape='tripleoctagon')
+
+    for e in ends:
+        dot.node(e, color='red', shape='tripleoctagon')
+
     for a in adjacencies:
         for node in adjacencies[a]:
             dot.edge(node, a)
