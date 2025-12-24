@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
-from collections import defaultdict
 import csv
-from operator import itemgetter
 import random
+from collections import defaultdict
+from operator import itemgetter
+from pathlib import Path
+
+import graphviz
 
 days = (
     "Starting City",
@@ -21,10 +24,18 @@ adjacencies = defaultdict(list)
 
 
 def parse():
-    global adjacencies, ends, starts
+    """Parse CSV file.
 
-    with open(
-        "/home/davemarq/shell-scripts/ragbrai-by-year.csv", newline=""
+    Create
+    - starting towns tuple
+    - ending towns tuple
+    - adjacency lists
+    """
+    global starts, ends
+
+    with Path.open(
+        "/home/davemarq/shell-scripts/ragbrai-by-year.csv",
+        newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
         for row in reader:
@@ -33,9 +44,12 @@ def parse():
                 ends.append(row["Saturday"])
             else:
                 ends.append(row["Friday"])
+    starts = tuple(starts)
+    ends = tuple(ends)
 
-    with open(
-        "/home/davemarq/shell-scripts/ragbrai-by-year.csv", newline=""
+    with Path.open(
+        "/home/davemarq/shell-scripts/ragbrai-by-year.csv",
+        newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
         for row in reader:
@@ -49,17 +63,16 @@ def parse():
 
 
 def makeroute():
-    global adjacencies, ends, starts
-
+    """Make and return a random route, or None if the created route is invalid."""
     route = []
     cur = random.choice(ends)
     route.append(cur)
-    for i in range(7):
+    for _ in range(7):
         try:
-            next = random.choice(adjacencies[cur])
+            nexttown = random.choice(adjacencies[cur])
         except IndexError:
             return None
-        route.append(next)
+        route.append(nexttown)
         cur = next
     if cur not in starts:
         return None
@@ -67,11 +80,22 @@ def makeroute():
     return reversed(route)
 
 
+def make_graph():
+    """Make DOT graph fro adjacencies lists."""
+    dot = graphviz.Digraph(name="ragbrai", format="png", engine="dot")
+    for a in adjacencies:
+        for node in adjacencies[a]:
+            dot.edge(node, a)
+    dot = dot.unflatten()
+    dot.render(view=True)
+
+
 parse()
+make_graph()
 
 routes = defaultdict(int)
 
-for i in range(1000000):
+for _ in range(1000000):
     r = None
     while r is None:
         r = makeroute()
