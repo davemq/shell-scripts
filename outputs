@@ -1,0 +1,3 @@
+#!/bin/bash
+
+eval swaybg $(for d in $(swaymsg -t get_outputs | jq '.[] | select(.active == true) | .name'); do echo '-o' $d '-i' $1; shift; done)
