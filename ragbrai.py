@@ -83,6 +83,7 @@ def makeroute():
 def make_graph():
     """Make DOT graph fro adjacencies lists."""
     dot = graphviz.Digraph(name="ragbrai", format="png", engine="dot")
+    dot.attr(rankdir='LR')
 
     for s in starts:
         dot.node(s, color='green', shape='tripleoctagon')
