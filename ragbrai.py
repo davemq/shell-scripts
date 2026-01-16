@@ -35,7 +35,7 @@ def parse():
     global starts, ends
 
     with Path.open(
-        "/home/davemarq/shell-scripts/ragbrai-by-year.csv",
+        Path.home() / "shell-scripts/ragbrai-by-year.csv",
         newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
@@ -49,7 +49,7 @@ def parse():
     ends = tuple(ends)
 
     with Path.open(
-        "/home/davemarq/shell-scripts/ragbrai-by-year.csv",
+        Path.home() / "shell-scripts/ragbrai-by-year.csv",
         newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
@@ -64,7 +64,7 @@ def parse():
 
 
 def makeroute():
-    """Make and return a random route, or None if the created route is invalid."""
+    """Create a random route, or None if the created route is invalid."""
     route = []
     cur = random.choice(ends)
     route.append(cur)
@@ -81,9 +81,9 @@ def makeroute():
     return reversed(route)
 
 
-def make_graph():
+def make_graph(name="ragbrai"):
     """Make DOT graph fro adjacencies lists."""
-    dot = graphviz.Digraph(name="ragbrai", format="png", engine="dot")
+    dot = graphviz.Digraph(name=name, format="png", engine="dot")
     dot.attr(rankdir="LR")
 
     for s in starts:
@@ -115,6 +115,23 @@ for _ in range(int(c.routes)):
     routes[tuple(r)] += 1
 print(f"Created {len(routes)} unique routes")
 
+
 sortedroutes = dict(sorted(routes.items(), key=itemgetter(1), reverse=True))
 for r in sortedroutes:
     print(r, sortedroutes[r])
+
+# Recreate adjacencies from routes[]
+adjacencies = defaultdict(set)
+starts = set()
+ends = set()
+
+for r in routes:
+    ends.add(r[-1])
+    prev = None
+    for town in reversed(r):
+        if prev:
+            adjacencies[prev].add(town)
+        prev = town
+    starts.add(prev)
+
+make_graph("generated")
