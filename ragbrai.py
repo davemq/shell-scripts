@@ -35,7 +35,7 @@ def parse():
     global starts, ends
 
     with Path.open(
-        "/home/dave/shell-scripts/ragbrai-by-year.csv",
+        Path.home() / "shell-scripts/ragbrai-by-year.csv",
         newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
@@ -49,7 +49,7 @@ def parse():
     ends = tuple(ends)
 
     with Path.open(
-        "/home/dave/shell-scripts/ragbrai-by-year.csv",
+        Path.home() / "shell-scripts/ragbrai-by-year.csv",
         newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
@@ -64,7 +64,7 @@ def parse():
 
 
 def makeroute():
-    """Make and return a random route, or None if the created route is invalid."""
+    """Create a random route, or None if the created route is invalid."""
     route = []
     cur = random.choice(ends)
     route.append(cur)
@@ -81,9 +81,9 @@ def makeroute():
     return reversed(route)
 
 
-def make_graph():
+def make_graph(name="ragbrai"):
     """Make DOT graph fro adjacencies lists."""
-    dot = graphviz.Digraph(name="ragbrai", format="png", engine="dot")
+    dot = graphviz.Digraph(name=name, format="png", engine="dot")
     dot.attr(rankdir="LR")
 
     for s in starts:
@@ -134,8 +134,4 @@ for r in routes:
         prev = town
     starts.add(prev)
 
-print(f"{starts=}")
-print(f"{ends=}")
-print(f"{adjacencies=}")
-
-make_graph()
+make_graph("generated")
