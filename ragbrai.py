@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import csv
 import random
 from collections import defaultdict
@@ -83,13 +84,13 @@ def makeroute():
 def make_graph():
     """Make DOT graph fro adjacencies lists."""
     dot = graphviz.Digraph(name="ragbrai", format="png", engine="dot")
-    dot.attr(rankdir='LR')
+    dot.attr(rankdir="LR")
 
     for s in starts:
-        dot.node(s, color='green', shape='tripleoctagon')
+        dot.node(s, color="green", shape="tripleoctagon")
 
     for e in ends:
-        dot.node(e, color='red', shape='tripleoctagon')
+        dot.node(e, color="red", shape="tripleoctagon")
 
     for a in adjacencies:
         for node in adjacencies[a]:
@@ -98,12 +99,16 @@ def make_graph():
     dot.render(view=True)
 
 
+args = argparse.ArgumentParser(prog="ragbrai.py", description="Analyze RAGBRAI routes")
+args.add_argument("--routes", "-r", default=1000000, help="Number of routes to create")
+c = args.parse_args()
+
 parse()
 make_graph()
 
 routes = defaultdict(int)
 
-for _ in range(1000000):
+for _ in range(int(c.routes)):
     r = None
     while r is None:
         r = makeroute()
