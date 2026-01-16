@@ -35,7 +35,7 @@ def parse():
     global starts, ends
 
     with Path.open(
-        "/home/davemarq/shell-scripts/ragbrai-by-year.csv",
+        "/home/dave/shell-scripts/ragbrai-by-year.csv",
         newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
@@ -49,7 +49,7 @@ def parse():
     ends = tuple(ends)
 
     with Path.open(
-        "/home/davemarq/shell-scripts/ragbrai-by-year.csv",
+        "/home/dave/shell-scripts/ragbrai-by-year.csv",
         newline="",
     ) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=",")
@@ -115,6 +115,27 @@ for _ in range(int(c.routes)):
     routes[tuple(r)] += 1
 print(f"Created {len(routes)} unique routes")
 
+
 sortedroutes = dict(sorted(routes.items(), key=itemgetter(1), reverse=True))
 for r in sortedroutes:
     print(r, sortedroutes[r])
+
+# Recreate adjacencies from routes[]
+adjacencies = defaultdict(set)
+starts = set()
+ends = set()
+
+for r in routes:
+    ends.add(r[-1])
+    prev = None
+    for town in reversed(r):
+        if prev:
+            adjacencies[prev].add(town)
+        prev = town
+    starts.add(prev)
+
+print(f"{starts=}")
+print(f"{ends=}")
+print(f"{adjacencies=}")
+
+make_graph()
